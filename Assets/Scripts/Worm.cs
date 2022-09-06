@@ -26,6 +26,13 @@ public class Worm : Entity
         {
             Hero.Instance.GetDamage();
         }
+        for (int i = 0; i < 10; i++)
+        {
+            if (collision.gameObject == Hero.Instance.layout[i])
+            {
+                GetDamage();
+            }
+        }
     }
     public override void Die()
     {

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Hero : Entity
 {
+    public GameObject[] layout = new GameObject[10];
     [SerializeField] private int speed = 3;
     [SerializeField] private int health;
     [SerializeField] private int jumpForce = 10;
@@ -22,9 +23,13 @@ public class Hero : Entity
 
     [SerializeField] private Sprite aliveHeart;
     [SerializeField] private Sprite deadHeart;
+    [SerializeField] private bool[] knifes = new bool[10];
 
     public bool isAttacking = false;
+    public static bool[] isKnifing = new bool [10];
+    public static bool[] isKnifed = new bool [10];
     public bool isRecharged;
+    public bool isRechargedKnife;
 
     public Transform attackPos;
     public float attackRange;
@@ -33,7 +38,7 @@ public class Hero : Entity
 
     private Rigidbody2D rb;
     private Animator anim;
-    private SpriteRenderer sprite;
+    public static SpriteRenderer sprite;
 
     public static Hero Instance { get; set; }
 
@@ -51,7 +56,14 @@ public class Hero : Entity
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        for (int i = 0; i < 10; i++)
+        {
+            isKnifed[i] = false;
+            knifes[i] = true;
+            isKnifing[i] = false;
+        }
         isRecharged = true;
+        isRechargedKnife= true;
     }
 
     private void FixedUpdate()
@@ -61,6 +73,8 @@ public class Hero : Entity
 
     private void Update()
     {
+        for (int i = 0; i < 10; i++)
+            layout[i].gameObject.SetActive(isKnifing[i]);
         if (isDead == false)
         {
         if (lives <= 0 && gettingdamage == false)
@@ -90,8 +104,18 @@ public class Hero : Entity
             {
                 Jump();
             }
-            if (Input.GetButtonDown("Fire2"))
+            else if (!isAttacking && isGrounded && Input.GetKeyDown(KeyCode.W))
+            {
+                Jump();
+            }
+            else if (!isAttacking && isGrounded && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Jump();
+            }
+            if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.RightControl))
                 Attack();
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+                Knifeatt();
         }
         if (health > lives)
             health = lives;
@@ -166,6 +190,25 @@ public class Hero : Entity
         }
     }
 
+    public void Knifeatt()
+    {
+        if (isRecharged && gettingdamage == false && isRechargedKnife)
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                if (knifes[i] == true)
+                {
+                    isKnifing[i] = true;
+                    isKnifed[i] = true;
+                    knifes[i] = false;
+                    isRechargedKnife = false;
+                    i = 10;
+                    StartCoroutine(KnifeCoolDown());
+                }
+            }
+        }
+    }
+
     private void OnAttack()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, enemy);
@@ -195,6 +238,11 @@ public class Hero : Entity
         isRecharged = true;
     }
 
+    private IEnumerator KnifeCoolDown()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isRechargedKnife = true;
+    }
     private IEnumerator EmemyOnAttack(Collider2D enemy)
     {
         SpriteRenderer enemyColor = enemy.GetComponentInChildren<SpriteRenderer>();

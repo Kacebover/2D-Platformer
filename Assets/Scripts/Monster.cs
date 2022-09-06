@@ -33,7 +33,7 @@ public class Monster : Entity
         {
             if (colliders.All(x=>x.GetComponent<Hero>()) && Hero.isDead == false)
                 Hero.Instance.GetDamage();
-            dir *= -1f;
+            dir *= -1;
         }
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
@@ -53,6 +53,13 @@ public class Monster : Entity
         {
             Hero.Instance.GetDamage();
         }
+        for (int i = 0; i < 10; i++)
+        {
+            if (collision.gameObject == Hero.Instance.layout[i])
+            {
+                GetDamage();
+            }
+        }
     }
 
     public override void Die()
@@ -65,7 +72,7 @@ public class Monster : Entity
     private IEnumerator Clarity()
     {
         Color color = sprite.color;
-        color.a = 1f;
+        color.a = 1;
         for(;color.a > 0.0f;)
         {
             yield return new WaitForSeconds(0.015f);
