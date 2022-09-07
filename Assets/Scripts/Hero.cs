@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class Hero : Entity
 {
     public GameObject[] layout = new GameObject[10];
+    public GameObject[] numbers = new GameObject[11];
+    private int number = 0;
     [SerializeField] private int speed = 3;
     [SerializeField] private int health;
     [SerializeField] private int jumpForce = 10;
@@ -75,6 +77,7 @@ public class Hero : Entity
     {
         for (int i = 0; i < 10; i++)
             layout[i].gameObject.SetActive(isKnifing[i]);
+        numbers[number].gameObject.SetActive(true);
         if (isDead == false)
         {
         if (lives <= 0 && gettingdamage == false)
@@ -198,6 +201,9 @@ public class Hero : Entity
             {
                 if (knifes[i] == true)
                 {
+                    numbers[number].gameObject.SetActive(false);
+                    number++;
+                    numbers[number].gameObject.SetActive(true);
                     isKnifing[i] = true;
                     isKnifed[i] = true;
                     knifes[i] = false;

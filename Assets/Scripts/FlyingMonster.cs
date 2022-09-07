@@ -43,7 +43,7 @@ public class FlyingMonster : Entity
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && lives > 0)
         {
             State = States.flyingmonsterattack;
             StartCoroutine(Attacking());
@@ -53,6 +53,7 @@ public class FlyingMonster : Entity
             if (collision.gameObject == Hero.Instance.layout[i])
             {
                 GetDamage();
+                StartCoroutine(EmemyOnAttack());
             }
         }
     }
@@ -89,5 +90,12 @@ public class FlyingMonster : Entity
     {
         flyingmonsterattacksound.Play();
         Hero.Instance.GetDamage();
+    }
+    private IEnumerator EmemyOnAttack()
+    {
+        SpriteRenderer enemyColor = GetComponentInChildren<SpriteRenderer>();
+        enemyColor.color = new Color(1, 0.27f, 0.27f, enemyColor.color.a);
+        yield return new WaitForSeconds(0.2f);
+        enemyColor.color = new Color(1, 1, 1, enemyColor.color.a);
     }
 }

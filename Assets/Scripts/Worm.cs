@@ -31,6 +31,7 @@ public class Worm : Entity
             if (collision.gameObject == Hero.Instance.layout[i])
             {
                 GetDamage();
+                StartCoroutine(EmemyOnAttack());
             }
         }
     }
@@ -52,6 +53,13 @@ public class Worm : Entity
             sprite.color=color;
         }
         Destroy(this.gameObject);
+    }
+    private IEnumerator EmemyOnAttack()
+    {
+        SpriteRenderer enemyColor = GetComponentInChildren<SpriteRenderer>();
+        enemyColor.color = new Color(1, 0.27f, 0.27f, enemyColor.color.a);
+        yield return new WaitForSeconds(0.2f);
+        enemyColor.color = new Color(1, 1, 1, enemyColor.color.a);
     }
 }
 
