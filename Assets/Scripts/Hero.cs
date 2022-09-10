@@ -17,8 +17,8 @@ public class Hero : Entity
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource landingSound;
     private bool gettingdamage = false;
-    public bool isGrounded = false;
-    public bool isGroundedfs = true;
+    private bool isGrounded = false;
+    private bool isGroundedfs = true;
     public static bool isDead;
 
     [SerializeField] private Image[] hearts;
@@ -77,7 +77,6 @@ public class Hero : Entity
     {
         for (int i = 0; i < 10; i++)
             layout[i].gameObject.SetActive(isKnifing[i]);
-        numbers[number].gameObject.SetActive(true);
         if (isDead == false)
         {
         if (lives <= 0 && gettingdamage == false)
@@ -91,7 +90,7 @@ public class Hero : Entity
             isDead = true;
             State = States.death;
         }
-        else
+        else if (Pause.pause == false)
         {
             if (isGrounded && !isAttacking && gettingdamage == false) State = States.idle;
 
@@ -120,6 +119,8 @@ public class Hero : Entity
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
                 Knifeatt();
         }
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.End))
+            Pause.Instance.Pauser();
         if (health > lives)
             health = lives;
 
@@ -155,7 +156,7 @@ public class Hero : Entity
 
     private void Checkground()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.075f);
         isGrounded = collider.Length > 1;
         if (isGrounded && isGroundedfs == false)
         {

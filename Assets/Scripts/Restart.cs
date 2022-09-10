@@ -20,6 +20,6 @@ public class Restart : MonoBehaviour
 
     public void OpenLevelsList()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

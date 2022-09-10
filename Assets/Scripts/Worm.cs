@@ -7,6 +7,7 @@ public class Worm : Entity
     private Animator anim;
     private Collider2D col;
     private SpriteRenderer sprite;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
@@ -18,10 +19,12 @@ public class Worm : Entity
     {
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
+        rb = GetComponent<Rigidbody2D>();
         lives = 1;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        rb.bodyType = RigidbodyType2D.Dynamic;
         if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
         {
             Hero.Instance.GetDamage();
@@ -37,6 +40,7 @@ public class Worm : Entity
     }
     public override void Die()
     {
+        rb.bodyType = RigidbodyType2D.Kinematic;
         col.isTrigger = true; 
         anim.SetTrigger("death");
         StartCoroutine(Clarity());
