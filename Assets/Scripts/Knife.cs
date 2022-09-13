@@ -48,4 +48,11 @@ public class Knife : MonoBehaviour
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - (gameObject.transform.position.y + 10), gameObject.transform.position.z);
             }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+            if (collision.gameObject != Hero.Instance.gameObject)
+            {
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - (gameObject.transform.position.y + 10), gameObject.transform.position.z);
+            }
+    }
 }

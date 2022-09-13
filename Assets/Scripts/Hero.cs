@@ -16,10 +16,11 @@ public class Hero : Entity
     [SerializeField] private AudioSource damageSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource landingSound;
-    private bool gettingdamage = false;
-    private bool isGrounded = false;
-    private bool isGroundedfs = true;
+    private bool gettingdamage;
+    private bool isGrounded;
+    private bool isGroundedfs;
     public static bool isDead;
+    private bool canJump;
 
     [SerializeField] private Image[] hearts;
 
@@ -27,7 +28,7 @@ public class Hero : Entity
     [SerializeField] private Sprite deadHeart;
     [SerializeField] private bool[] knifes = new bool[10];
 
-    public bool isAttacking = false;
+    public bool isAttacking;
     public static bool[] isKnifing = new bool [10];
     public static bool[] isKnifed = new bool [10];
     public bool isRecharged;
@@ -55,6 +56,8 @@ public class Hero : Entity
         health = lives;
         Instance = this;
         isDead = false;
+        isGroundedfs = true;
+        gettingdamage = false;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -64,6 +67,7 @@ public class Hero : Entity
             knifes[i] = true;
             isKnifing[i] = false;
         }
+        isAttacking = false;
         isRecharged = true;
         isRechargedKnife= true;
     }
@@ -98,19 +102,19 @@ public class Hero : Entity
                 Run();
             else if (!isAttacking && Input.GetButton("Horizontal"))
                 Run();
-            if (!isAttacking && isGrounded && joystick.Vertical > 0.5f)
+            if (!isAttacking && isGrounded && canJump && joystick.Vertical > 0.5f)
             {
                 Jump();
             }
-            else if (!isAttacking && isGrounded && Input.GetButtonDown("Jump"))
+            else if (!isAttacking && isGrounded && canJump && Input.GetButtonDown("Jump"))
             {
                 Jump();
             }
-            else if (!isAttacking && isGrounded && Input.GetKeyDown(KeyCode.W))
+            else if (!isAttacking && isGrounded && canJump && Input.GetKeyDown(KeyCode.W))
             {
                 Jump();
             }
-            else if (!isAttacking && isGrounded && Input.GetKeyDown(KeyCode.UpArrow))
+            else if (!isAttacking && isGrounded && canJump && Input.GetKeyDown(KeyCode.UpArrow))
             {
                 Jump();
             }
@@ -265,6 +269,16 @@ public class Hero : Entity
         yield return new WaitForSeconds(0.2f);
         sprite.color = new Color(1, 1, 1, sprite.color.a);
         gettingdamage = false;
+    }
+
+    private void OnCollisionEnter2D()
+    {
+        canJump = true;
+    }
+
+    private void OnTriggerEnter2D()
+    {
+        canJump = false;
     }
 }
 
