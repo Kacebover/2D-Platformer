@@ -90,7 +90,7 @@ public class Hero : Entity
             isDead = true;
             State = States.death;
         }
-        else if (Pause.pause == false)
+        else if (Pause.pause == false && lives > 0)
         {
             if (isGrounded && !isAttacking && gettingdamage == false) State = States.idle;
 

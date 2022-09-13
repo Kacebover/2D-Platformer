@@ -8,6 +8,7 @@ public class Worm : Entity
     private Collider2D col;
     private SpriteRenderer sprite;
     private Rigidbody2D rb;
+    private bool isGrounded = false;
 
     private void Awake()
     {
@@ -22,9 +23,16 @@ public class Worm : Entity
         rb = GetComponent<Rigidbody2D>();
         lives = 1;
     }
+    private void FixedUpdate()
+    {
+        Checkground();
+        if (!isGrounded)
+            rb.WakeUp();
+        else
+            rb.Sleep();
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        rb.bodyType = RigidbodyType2D.Dynamic;
         if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
         {
             Hero.Instance.GetDamage();
@@ -40,10 +48,19 @@ public class Worm : Entity
     }
     public override void Die()
     {
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.Sleep();
         col.isTrigger = true; 
         anim.SetTrigger("death");
         StartCoroutine(Clarity());
+    }
+    private void OnTriggerStay2D()
+    {
+        rb.Sleep();
+    }
+    private void Checkground()
+    {
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+        isGrounded = collider.Length > 1;
     }
     private IEnumerator Clarity()
     {
