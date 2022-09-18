@@ -21,6 +21,7 @@ public class Hero : Entity
     private bool isGroundedfs;
     public static bool isDead;
     private bool canJump;
+    private bool jumpTimer;
 
     [SerializeField] private Image[] hearts;
 
@@ -58,6 +59,7 @@ public class Hero : Entity
         isDead = false;
         isGroundedfs = true;
         gettingdamage = false;
+        jumpTimer = true;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -102,19 +104,19 @@ public class Hero : Entity
                 Run();
             else if (!isAttacking && Input.GetButton("Horizontal"))
                 Run();
-            if (!isAttacking && isGrounded && canJump && joystick.Vertical > 0.5f)
+            if (!isAttacking && isGroundedfs && canJump && jumpTimer && joystick.Vertical > 0.5f)
             {
                 Jump();
             }
-            else if (!isAttacking && isGrounded && canJump && Input.GetButtonDown("Jump"))
+            else if (!isAttacking && isGroundedfs && canJump && jumpTimer && Input.GetButtonDown("Jump"))
             {
                 Jump();
             }
-            else if (!isAttacking && isGrounded && canJump && Input.GetKeyDown(KeyCode.W))
+            else if (!isAttacking && isGroundedfs && canJump && jumpTimer && Input.GetKeyDown(KeyCode.W))
             {
                 Jump();
             }
-            else if (!isAttacking && isGrounded && canJump && Input.GetKeyDown(KeyCode.UpArrow))
+            else if (!isAttacking && isGroundedfs && canJump && jumpTimer && Input.GetKeyDown(KeyCode.UpArrow))
             {
                 Jump();
             }
@@ -154,13 +156,13 @@ public class Hero : Entity
 
     private void Jump()
     {
-        rb.velocity = Vector2.up * jumpForce;
+        StartCoroutine(HeroOnJump());
         jumpSound.Play();
     }
 
     private void Checkground()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.075f);
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.4f);
         isGrounded = collider.Length > 1;
         if (isGrounded && isGroundedfs == false)
         {
@@ -271,14 +273,25 @@ public class Hero : Entity
         gettingdamage = false;
     }
 
+    private IEnumerator HeroOnJump()
+    {
+        yield return new WaitForSeconds(0.01f);
+        rb.velocity = Vector2.up * jumpForce;
+        jumpTimer = false;
+        yield return new WaitForSeconds(0.5f);
+        jumpTimer = true;
+    }
+
     private void OnCollisionEnter2D()
     {
-        canJump = true;
+        if (canJump == false)
+            canJump = true;
     }
 
     private void OnTriggerEnter2D()
     {
-        canJump = false;
+        if (canJump == true)
+            canJump = false;
     }
 }
 
