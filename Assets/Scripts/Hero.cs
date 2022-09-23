@@ -16,6 +16,7 @@ public class Hero : Entity
     [SerializeField] private AudioSource damageSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource landingSound;
+    private Vector2 tempy = new Vector2 (0.9158778f, 0.01f);
     private bool gettingdamage;
     private bool isGrounded;
     private bool isGroundedfs;
@@ -43,6 +44,7 @@ public class Hero : Entity
     private Rigidbody2D rb;
     private Animator anim;
     public static SpriteRenderer sprite;
+    private Collider2D col;
 
     public static Hero Instance { get; set; }
 
@@ -63,6 +65,7 @@ public class Hero : Entity
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
         for (int i = 0; i < 10; i++)
         {
             isKnifed[i] = false;
@@ -76,7 +79,8 @@ public class Hero : Entity
 
     private void FixedUpdate()
     {
-        Checkground();
+        if (!isDead && lives > 0)
+            Checkground();
     }
 
     private void Update()
@@ -162,7 +166,7 @@ public class Hero : Entity
 
     private void Checkground()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.35f);
+        Collider2D[] collider = Physics2D.OverlapBoxAll(transform.position, tempy, 0);
         isGrounded = collider.Length > 1;
         if (isGrounded && isGroundedfs == false)
         {
@@ -275,7 +279,6 @@ public class Hero : Entity
 
     private IEnumerator HeroOnJump()
     {
-        yield return new WaitForSeconds(0.02f);
         if(lives > 0 && !isDead)
         {
             rb.velocity = Vector2.up * jumpForce;

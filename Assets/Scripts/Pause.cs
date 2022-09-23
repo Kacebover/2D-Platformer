@@ -12,22 +12,23 @@ public class Pause : MonoBehaviour
     {
         pause = false;
         Instance = this;
+        Time.timeScale = 1;
     }
     public void Pauser()
     {
-            if (pause == true)
-            {
-                layouton.gameObject.SetActive(false);
-                layoutoff.gameObject.SetActive(true);
-                pause = false;
-                Time.timeScale = 1;
-            }
-            else
-            {
-                layoutoff.gameObject.SetActive(false);
-                layouton.gameObject.SetActive(true);
-                pause = true;
-                Time.timeScale = 0;
-            }
+        if (pause == true)
+        {
+            layouton.gameObject.SetActive(false);
+            layoutoff.gameObject.SetActive(true);
+            pause = false;
+            Time.timeScale = 1;
+        }
+        else
+        {
+            layoutoff.gameObject.SetActive(false);
+            layouton.gameObject.SetActive(true);
+            pause = true;
+            Time.timeScale = 0;
+        }
     }
 }
