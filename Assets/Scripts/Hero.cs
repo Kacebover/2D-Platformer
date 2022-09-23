@@ -162,7 +162,7 @@ public class Hero : Entity
 
     private void Checkground()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.4f);
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.35f);
         isGrounded = collider.Length > 1;
         if (isGrounded && isGroundedfs == false)
         {
@@ -275,11 +275,14 @@ public class Hero : Entity
 
     private IEnumerator HeroOnJump()
     {
-        yield return new WaitForSeconds(0.01f);
-        rb.velocity = Vector2.up * jumpForce;
-        jumpTimer = false;
-        yield return new WaitForSeconds(0.5f);
-        jumpTimer = true;
+        yield return new WaitForSeconds(0.02f);
+        if(lives > 0 && !isDead)
+        {
+            rb.velocity = Vector2.up * jumpForce;
+            jumpTimer = false;
+            yield return new WaitForSeconds(0.5f);
+            jumpTimer = true;
+        }
     }
 
     private void OnCollisionEnter2D()
