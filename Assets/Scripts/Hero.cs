@@ -21,7 +21,6 @@ public class Hero : Entity
     private bool isGrounded;
     private bool isGroundedfs;
     public static bool isDead;
-    private bool canJump;
     private bool jumpTimer;
 
     [SerializeField] private Image[] hearts;
@@ -80,7 +79,9 @@ public class Hero : Entity
     private void FixedUpdate()
     {
         if (!isDead && lives > 0)
+        {
             Checkground();
+        }
     }
 
     private void Update()
@@ -108,22 +109,6 @@ public class Hero : Entity
                 Run();
             else if (!isAttacking && Input.GetButton("Horizontal"))
                 Run();
-            if (!isAttacking && isGroundedfs && canJump && jumpTimer && joystick.Vertical > 0.5f)
-            {
-                Jump();
-            }
-            else if (!isAttacking && isGroundedfs && canJump && jumpTimer && Input.GetButtonDown("Jump"))
-            {
-                Jump();
-            }
-            else if (!isAttacking && isGroundedfs && canJump && jumpTimer && Input.GetKeyDown(KeyCode.W))
-            {
-                Jump();
-            }
-            else if (!isAttacking && isGroundedfs && canJump && jumpTimer && Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                Jump();
-            }
             if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.RightControl))
                 Attack();
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
@@ -279,25 +264,33 @@ public class Hero : Entity
 
     private IEnumerator HeroOnJump()
     {
-        if(lives > 0 && !isDead)
+        rb.velocity = Vector2.up * jumpForce;
+        jumpTimer = false;
+        yield return new WaitForSeconds(0.5f);
+        jumpTimer = true;
+    }
+
+    private void OnCollisionStay2D()
+    {
+        if (!isDead && lives > 0 && Pause.pause == false)
         {
-            rb.velocity = Vector2.up * jumpForce;
-            jumpTimer = false;
-            yield return new WaitForSeconds(0.5f);
-            jumpTimer = true;
+            if (!isAttacking && isGroundedfs && jumpTimer && joystick.Vertical > 0.5f)
+            {
+                Jump();
+            }
+            else if (!isAttacking && isGroundedfs && jumpTimer && Input.GetButtonDown("Jump"))
+            {
+                Jump();
+            }
+            else if (!isAttacking && isGroundedfs && jumpTimer && Input.GetKeyDown(KeyCode.W))
+            {
+                Jump();
+            }
+            else if (!isAttacking && isGroundedfs && jumpTimer && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Jump();
+            }
         }
-    }
-
-    private void OnCollisionEnter2D()
-    {
-        if (canJump == false)
-            canJump = true;
-    }
-
-    private void OnTriggerEnter2D()
-    {
-        if (canJump == true)
-            canJump = false;
     }
 }
 
