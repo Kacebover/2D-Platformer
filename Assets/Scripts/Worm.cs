@@ -27,7 +27,6 @@ public class Worm : Entity
     }
     private void FixedUpdate()
     {
-        Checkground();
         if (!isGrounded)
             rb.WakeUp();
         else
@@ -50,6 +49,7 @@ public class Worm : Entity
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
+        isGrounded = false;
         if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
         {
             StartCoroutine(HeroOnCol());
@@ -57,20 +57,31 @@ public class Worm : Entity
     }
     public override void Die()
     {
-        rb.Sleep();
+        rb.isKinematic = true;
         col.isTrigger = true; 
         anim.SetTrigger("death");
         StartCoroutine(Clarity());
     }
     private void OnTriggerStay2D()
     {
-        rb.Sleep();
+        isGrounded = true;
     }
-    private void Checkground()
+    private void OnTriggerExit2D()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, 0.1f);
-        isGrounded = collider.Length > 1;
+        isGrounded = false;
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        foreach(var i in collision.contacts)
+        {
+            if (i.normal.y > 0.5)
+            {
+                isGrounded = true;
+                break;
+            }
+        }
+    }
+
     private IEnumerator Clarity()
     {
         Color color = sprite.color;
