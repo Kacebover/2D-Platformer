@@ -12310,7 +12310,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 2352524462435536537}
           m_TargetAssemblyTypeName: Hero, Assembly-CSharp
           m_MethodName: Attack
           m_Mode: 1
@@ -16738,7 +16738,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 2352524462435536537}
           m_TargetAssemblyTypeName: Hero, Assembly-CSharp
           m_MethodName: Knifeatt
           m_Mode: 1
