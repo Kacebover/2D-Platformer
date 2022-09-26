@@ -10,6 +10,7 @@ public class Monster : Entity
     private Vector3 dir;
     private SpriteRenderer sprite;
     private Collider2D col;
+    private bool canDamage;
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class Monster : Entity
         col = GetComponent<Collider2D>();
         dir = transform.right;
         lives = 1;
+        canDamage = true;
     }
 
     private void Move()
@@ -31,7 +33,7 @@ public class Monster : Entity
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * 0.1f + transform.right * dir.x * 0.7f, -0.1f);
         if (colliders.Length > 0) 
         {
-            if (colliders.All(x=>x.GetComponent<Hero>()) && Hero.isDead == false)
+            if (colliders.All(x=>x.GetComponent<Hero>()) && Hero.isDead == false && canDamage == true)
                 Hero.Instance.GetDamage();
             dir *= -1;
         }
@@ -49,7 +51,7 @@ public class Monster : Entity
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && canDamage == true)
         {
             Hero.Instance.GetDamage();
         }
@@ -60,6 +62,14 @@ public class Monster : Entity
                 GetDamage();
                 StartCoroutine(EmemyOnAttack());
             }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
+        {
+            StartCoroutine(HeroOnCol());
         }
     }
 
@@ -89,5 +99,12 @@ public class Monster : Entity
         enemyColor.color = new Color(1, 0.27f, 0.27f, enemyColor.color.a);
         yield return new WaitForSeconds(0.2f);
         enemyColor.color = new Color(1, 1, 1, enemyColor.color.a);
+    }
+
+    private IEnumerator HeroOnCol()
+    {
+        canDamage = false;
+        yield return new WaitForSeconds(0.2f);
+        canDamage = true;
     }
 }

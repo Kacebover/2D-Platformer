@@ -16,7 +16,7 @@ public class Hero : Entity
     [SerializeField] private AudioSource damageSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource landingSound;
-    private Vector2 tempy = new Vector2 (0.9158778f, 0.01f);
+    private Vector2 tempy = new Vector2 (0.92f, 0);
     private bool gettingdamage;
     private bool isGrounded;
     private bool isGroundedfs;
@@ -109,6 +109,22 @@ public class Hero : Entity
                 Run();
             else if (!isAttacking && Input.GetButton("Horizontal"))
                 Run();
+            if (!isAttacking && isGrounded && jumpTimer && joystick.Vertical > 0.5f)
+            {
+                Jump();
+            }
+            else if (!isAttacking && isGrounded && jumpTimer && Input.GetButtonDown("Jump"))
+            {
+                Jump();
+            }
+            else if (!isAttacking && isGrounded && jumpTimer && Input.GetKeyDown(KeyCode.W))
+            {
+                Jump();
+            }
+            else if (!isAttacking && isGrounded && jumpTimer && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Jump();
+            }
             if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.RightControl))
                 Attack();
             if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
@@ -151,8 +167,6 @@ public class Hero : Entity
 
     private void Checkground()
     {
-        Collider2D[] collider = Physics2D.OverlapBoxAll(transform.position, tempy, 0);
-        isGrounded = collider.Length > 1;
         if (isGrounded && isGroundedfs == false)
         {
             landingSound.Play();
@@ -162,7 +176,8 @@ public class Hero : Entity
         {
             if (isGroundedfs == true)
                 isGroundedfs = false;
-            State = States.jump;
+            if (State != States.jump)
+                State = States.jump;
         }
     }
 
@@ -171,8 +186,7 @@ public class Hero : Entity
         damageSound.Play();
         State = States.gettingdamage;
         StartCoroutine(HeroOnAttack());
-        if (isDead == false)
-            lives -= 1;
+        lives -= 1;
     }
 
     public void Attack()
@@ -270,27 +284,21 @@ public class Hero : Entity
         jumpTimer = true;
     }
 
-    private void OnCollisionStay2D()
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!isDead && lives > 0 && Pause.pause == false)
+        foreach(var i in collision.contacts)
         {
-            if (!isAttacking && isGroundedfs && jumpTimer && joystick.Vertical > 0.5f)
+            if (i.normal.y > 0.5)
             {
-                Jump();
-            }
-            else if (!isAttacking && isGroundedfs && jumpTimer && Input.GetButtonDown("Jump"))
-            {
-                Jump();
-            }
-            else if (!isAttacking && isGroundedfs && jumpTimer && Input.GetKeyDown(KeyCode.W))
-            {
-                Jump();
-            }
-            else if (!isAttacking && isGroundedfs && jumpTimer && Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                Jump();
+                isGrounded = true;
+                break;
             }
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isGrounded = false;
     }
 }
 

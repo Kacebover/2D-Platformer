@@ -13,6 +13,7 @@ public class FlyingMonster : Entity
     public GameObject hero;
     [SerializeField] private Transform herotarget;
     [SerializeField] private Transform spawntarget;
+    private bool canDamage;
 
     private States State
     {
@@ -30,6 +31,7 @@ public class FlyingMonster : Entity
     {
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
+        canDamage = true;
     }
     void Update()
     {
@@ -43,7 +45,7 @@ public class FlyingMonster : Entity
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && lives > 0)
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && lives > 0 && canDamage == true)
         {
             State = States.flyingmonsterattack;
             StartCoroutine(Attacking());
@@ -55,6 +57,14 @@ public class FlyingMonster : Entity
                 GetDamage();
                 StartCoroutine(EmemyOnAttack());
             }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
+        {
+            StartCoroutine(HeroOnCol());
         }
     }
 
@@ -97,5 +107,11 @@ public class FlyingMonster : Entity
         enemyColor.color = new Color(1, 0.27f, 0.27f, enemyColor.color.a);
         yield return new WaitForSeconds(0.2f);
         enemyColor.color = new Color(1, 1, 1, enemyColor.color.a);
+    }
+    private IEnumerator HeroOnCol()
+    {
+        canDamage = false;
+        yield return new WaitForSeconds(0.2f);
+        canDamage = true;
     }
 }

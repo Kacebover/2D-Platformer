@@ -9,6 +9,7 @@ public class Worm : Entity
     private SpriteRenderer sprite;
     private Rigidbody2D rb;
     private bool isGrounded = false;
+    private bool canDamage;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class Worm : Entity
         col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         lives = 1;
+        canDamage = true;
     }
     private void FixedUpdate()
     {
@@ -33,7 +35,7 @@ public class Worm : Entity
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && canDamage == true)
         {
             Hero.Instance.GetDamage();
         }
@@ -44,6 +46,13 @@ public class Worm : Entity
                 GetDamage();
                 StartCoroutine(EmemyOnAttack());
             }
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
+        {
+            StartCoroutine(HeroOnCol());
         }
     }
     public override void Die()
@@ -81,6 +90,12 @@ public class Worm : Entity
         enemyColor.color = new Color(1, 0.27f, 0.27f, enemyColor.color.a);
         yield return new WaitForSeconds(0.2f);
         enemyColor.color = new Color(1, 1, 1, enemyColor.color.a);
+    }
+    private IEnumerator HeroOnCol()
+    {
+        canDamage = false;
+        yield return new WaitForSeconds(0.2f);
+        canDamage = true;
     }
 }
 
