@@ -43,7 +43,7 @@ public class Hero : Entity
     private Rigidbody2D rb;
     private Animator anim;
     public static SpriteRenderer sprite;
-    private Collider2D col;
+    public Collider2D col;
 
     public static Hero Instance { get; set; }
 

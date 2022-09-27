@@ -55,6 +55,10 @@ public class Monster : Entity
         {
             Hero.Instance.GetDamage();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         for (int i = 0; i < 10; i++)
         {
             if (collision.gameObject == Hero.Instance.layout[i])
@@ -83,12 +87,11 @@ public class Monster : Entity
     private IEnumerator Clarity()
     {
         Color color = sprite.color;
-        color.a = 1;
         for(;color.a > 0.0f;)
         {
-            yield return new WaitForSeconds(0.015f);
+            yield return new WaitForSeconds(0.1f);
             color = sprite.color;
-            color.a -= 0.01f;
+            color.a -= 0.1f;
             sprite.color=color;
         }
         Destroy(this.gameObject);

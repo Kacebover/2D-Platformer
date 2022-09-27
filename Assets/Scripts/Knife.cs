@@ -31,9 +31,9 @@ public class Knife : MonoBehaviour
                     else
                         dir[i] = Hero.Instance.layout[i].transform.right * 1;
                     if (dir[i].x > 0.0f)
-                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.sprite.transform.position.x, Hero.sprite.transform.position.y + 1, Hero.sprite.transform.position.z);
+                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.Instance.col.bounds.center.x, Hero.sprite.transform.position.y + 1, Hero.sprite.transform.position.z);
                     else
-                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.sprite.transform.position.x - 1, Hero.sprite.transform.position.y + 1, Hero.sprite.transform.position.z);
+                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.Instance.col.bounds.center.x - 0.6f, Hero.sprite.transform.position.y + 1, Hero.sprite.transform.position.z);
                     sprite[i].flipX = dir[i].x < 0.0f;
                 }
                 Hero.Instance.layout[i].transform.position = Vector3.MoveTowards(Hero.Instance.layout[i].transform.position, Hero.Instance.layout[i].transform.position + dir[i], speed * Time.deltaTime);
