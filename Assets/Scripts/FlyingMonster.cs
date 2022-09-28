@@ -35,7 +35,7 @@ public class FlyingMonster : Entity
     }
     void Update()
     {
-        if (hero.transform.position.x <= 119.9 && hero.transform.position.x >= 98 && hero.transform.position.y <= -1)
+        if (Hero.Instance.col.bounds.center.x <= 120 && Hero.Instance.col.bounds.center.x >= 98 && hero.transform.position.y <= -1)
             GetComponent<AIDestinationSetter>().target = herotarget;
         else
             GetComponent<AIDestinationSetter>().target = spawntarget;
