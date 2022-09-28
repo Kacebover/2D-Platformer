@@ -35,12 +35,12 @@ public class FlyingMonster : Entity
     }
     void Update()
     {
-        if (Hero.Instance.col.bounds.center.x <= 120 && Hero.Instance.col.bounds.center.x >= 98 && hero.transform.position.y <= -1)
+        if (Hero.Instance.col.bounds.center.x <= 120 && Hero.Instance.col.bounds.center.x >= 98 && hero.transform.position.y <= 2.2)
             GetComponent<AIDestinationSetter>().target = herotarget;
         else
             GetComponent<AIDestinationSetter>().target = spawntarget;
         if (lives > 0)
-            sprite.flipX = AIPath.desiredVelocity.x < 0.01f;
+            sprite.flipX = AIPath.desiredVelocity.x <= 0.01f;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
