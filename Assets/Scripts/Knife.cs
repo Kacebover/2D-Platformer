@@ -8,6 +8,9 @@ public class Knife : MonoBehaviour
     [SerializeField] private int speed = 8;
     private Vector3[] dir = new Vector3[10];
     public static SpriteRenderer[] sprite = new SpriteRenderer[10];
+    Collider2D objCollider;
+    Camera cam;
+    Plane[] planes;
     public static Knife Instance { get; set; }
 
     private void Awake()
@@ -15,6 +18,9 @@ public class Knife : MonoBehaviour
         for(int i = 0; i < 10; i++)
             sprite[i] = Hero.Instance.layout[i].GetComponentInChildren<SpriteRenderer>();
         Instance = this;
+        cam = Camera.main;
+        planes = GeometryUtility.CalculateFrustumPlanes(cam);
+        objCollider =  GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -37,6 +43,10 @@ public class Knife : MonoBehaviour
                     sprite[i].flipX = dir[i].x < 0.0f;
                 }
                 Hero.Instance.layout[i].transform.position = Vector3.MoveTowards(Hero.Instance.layout[i].transform.position, Hero.Instance.layout[i].transform.position + dir[i], speed * Time.deltaTime);
+                if (!GeometryUtility.TestPlanesAABB(planes, objCollider.bounds))
+                {
+                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - (gameObject.transform.position.y + 10), gameObject.transform.position.z);
+                }
             }
         }
     }
