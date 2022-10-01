@@ -30,7 +30,6 @@ public class Hero : Entity
     [SerializeField] private bool[] knifes = new bool[10];
 
     public bool isAttacking;
-    public static bool[] isKnifing = new bool [10];
     public static bool[] isKnifed = new bool [10];
     public bool isRecharged;
     public bool isRechargedKnife;
@@ -69,7 +68,6 @@ public class Hero : Entity
         {
             isKnifed[i] = false;
             knifes[i] = true;
-            isKnifing[i] = false;
         }
         isAttacking = false;
         isRecharged = true;
@@ -87,7 +85,7 @@ public class Hero : Entity
     private void Update()
     {
         for (int i = 0; i < 10; i++)
-            layout[i].gameObject.SetActive(isKnifing[i]);
+            layout[i].gameObject.SetActive(!knifes[i]);
         if (isDead == false)
         {
         if (lives <= 0 && gettingdamage == false)
@@ -214,7 +212,6 @@ public class Hero : Entity
                     numbers[number].gameObject.SetActive(false);
                     number++;
                     numbers[number].gameObject.SetActive(true);
-                    isKnifing[i] = true;
                     isKnifed[i] = true;
                     knifes[i] = false;
                     isRechargedKnife = false;
