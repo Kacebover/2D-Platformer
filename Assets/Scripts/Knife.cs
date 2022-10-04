@@ -40,23 +40,20 @@ public class Knife : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-            if (collision.gameObject != Hero.Instance.gameObject && collision.gameObject != CamKordons.Instance.gameObject )
+            if (collision.gameObject != Hero.Instance.gameObject)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + 10), transform.position.z);
             }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-            if (collision.gameObject != Hero.Instance.gameObject && collision.gameObject != CamKordons.Instance.gameObject )
+            if (collision.gameObject != Hero.Instance.gameObject)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + 10), transform.position.z);
             }
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnBecameInvisible()
     {
-        if (collision.gameObject == CamKordons.Instance.gameObject )
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + 10), transform.position.z);
-        }
+        transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + 10), transform.position.z);
     }
 }
