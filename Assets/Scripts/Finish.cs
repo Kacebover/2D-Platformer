@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Finish : MonoBehaviour
 {
-    public GameObject layout;
+    [SerializeField] private GameObject layout;
     public static bool Levelpassed;
 
     private void Awake()

@@ -5,17 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Restart : MonoBehaviour
 {
-    public GameObject layout;
+    [SerializeField] private GameObject layout;
 
-    public void Update() 
+    private void Update() 
     {
         if (Finish.Levelpassed == false)
             layout.gameObject.SetActive(Hero.isDead);
-    }
-
-    public void PlayCurrentLevel()
-    {
-
     }
 
     public void OpenLevelsList()

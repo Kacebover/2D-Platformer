@@ -10,7 +10,7 @@ public class FlyingMonster : Entity
     private Collider2D col;
     private Animator anim;
     [SerializeField] private AudioSource flyingmonsterattacksound;
-    public GameObject hero;
+    [SerializeField] private GameObject hero;
     [SerializeField] private Transform herotarget;
     [SerializeField] private Transform spawntarget;
     private bool canDamage;

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Hero : Entity
 {
     public GameObject[] layout = new GameObject[10];
-    public GameObject[] numbers = new GameObject[11];
+    [SerializeField] private GameObject[] numbers = new GameObject[11];
     private int number = 0;
     [SerializeField] private int speed = 3;
     [SerializeField] private int health;
@@ -29,15 +29,15 @@ public class Hero : Entity
     [SerializeField] private Sprite deadHeart;
     [SerializeField] private bool[] knifes = new bool[10];
 
-    public bool isAttacking;
+    private bool isAttacking;
     public static bool[] isKnifed = new bool [10];
-    public bool isRecharged;
-    public bool isRechargedKnife;
+    private bool isRecharged;
+    private bool isRechargedKnife;
 
-    public Transform attackPos;
-    public float attackRange;
-    public LayerMask enemy;
-    public Joystick joystick;
+    [SerializeField] private Transform attackPos;
+    [SerializeField] private float attackRange;
+    [SerializeField] private LayerMask enemy;
+    [SerializeField] private Joystick joystick;
 
     private Rigidbody2D rb;
     private Animator anim;

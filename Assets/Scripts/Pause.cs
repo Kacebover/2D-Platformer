@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Pause : MonoBehaviour
 {
-    public GameObject layoutoff;
-    public GameObject layouton;
+    [SerializeField] private GameObject layoutoff;
+    [SerializeField] private GameObject layouton;
     public static bool pause;
     public static Pause Instance { get; set; }
     private void Awake()

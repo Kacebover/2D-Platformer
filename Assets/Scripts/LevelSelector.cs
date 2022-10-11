@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
 {
-    public Button[] levels;
+    [SerializeField] private Button[] levels;
 
     private void Start()
     {
