@@ -35,6 +35,13 @@ public class Monster : Entity
         {
             if (colliders.All(x=>x.GetComponent<Hero>()) && Hero.isDead == false && canDamage == true)
                 Hero.Instance.GetDamage();
+            else if (colliders.All(x=>x.GetComponent<Monster>()))
+            {
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    colliders[i].GetComponent<Monster>().dir *= -1;
+                }
+            }
             dir *= -1;
         }
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);

@@ -38211,6 +38211,7 @@ MonoBehaviour:
   - {fileID: 1001517366499579139}
   - {fileID: 1001517368179969520}
   - {fileID: 1001517366641135562}
+  deadzone: -10
   speed: 3
   health: 0
   jumpForce: 10
@@ -38227,9 +38228,6 @@ MonoBehaviour:
   aliveHeart: {fileID: 21300000, guid: cf6a7935cc2258ec5adbff69af8ee8b7, type: 3}
   deadHeart: {fileID: 21300000, guid: d46658f6ee4f9af8c97ca787ce7d58e8, type: 3}
   knifes: 00000000000000000000
-  isAttacking: 0
-  isRecharged: 1
-  isRechargedKnife: 0
   attackPos: {fileID: 3250671144913220246}
   attackRange: 1.38
   enemy:

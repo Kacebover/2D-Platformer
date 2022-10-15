@@ -9,6 +9,7 @@ public class Hero : Entity
     public GameObject[] layout = new GameObject[10];
     [SerializeField] private GameObject[] numbers = new GameObject[11];
     private int number = 0;
+    public int deadzone;
     [SerializeField] private int speed = 3;
     [SerializeField] private int health;
     [SerializeField] private int jumpForce = 10;
@@ -16,7 +17,7 @@ public class Hero : Entity
     [SerializeField] private AudioSource damageSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource landingSound;
-    private Vector2 tempy = new Vector2 (0.92f, 0);
+    private Vector2 tempy = new Vector2 (0.7f, 0);
     private bool gettingdamage;
     private bool isGrounded;
     private bool isGroundedfs;
@@ -93,7 +94,7 @@ public class Hero : Entity
             isDead = true;
             State = States.death;
         }
-        else if (transform.position.y < -10)
+        else if (transform.position.y < deadzone)
         {
             damageSound.Play();
             isDead = true;
@@ -165,6 +166,9 @@ public class Hero : Entity
 
     private void Checkground()
     {
+        Vector2 temp = new Vector2 (Instance.col.bounds.center.x, Instance.transform.position.y);
+        Collider2D[] collider = Physics2D.OverlapBoxAll(temp, tempy, 0);
+        isGrounded = collider.Length > 1;
         if (isGrounded && isGroundedfs == false)
         {
             landingSound.Play();
@@ -279,23 +283,6 @@ public class Hero : Entity
         jumpTimer = false;
         yield return new WaitForSeconds(0.5f);
         jumpTimer = true;
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        foreach(var i in collision.contacts)
-        {
-            if (i.normal.y > 0.5)
-            {
-                isGrounded = true;
-                break;
-            }
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isGrounded = false;
     }
 }
 
