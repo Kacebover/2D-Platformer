@@ -42,18 +42,18 @@ public class Knife : MonoBehaviour
     {
             if (collision.gameObject != Hero.Instance.gameObject)
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + Hero.Instance.deadzone), transform.position.z);
+                transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + -(Hero.Instance.deadzone)), transform.position.z);
             }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
             if (collision.gameObject != Hero.Instance.gameObject)
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + Hero.Instance.deadzone), transform.position.z);
+                transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + -(Hero.Instance.deadzone)), transform.position.z);
             }
     }
     private void OnBecameInvisible()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + Hero.Instance.deadzone), transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y - (transform.position.y + -(Hero.Instance.deadzone)), transform.position.z);
     }
 }

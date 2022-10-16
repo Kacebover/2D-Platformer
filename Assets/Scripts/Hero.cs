@@ -81,6 +81,10 @@ public class Hero : Entity
         {
             Checkground();
         }
+        if (!isAttacking && joystick.Horizontal != 0)
+                Run();
+        else if (!isAttacking && Input.GetButton("Horizontal"))
+            Run();
     }
 
     private void Update()
@@ -105,9 +109,13 @@ public class Hero : Entity
             if (isGrounded && !isAttacking && gettingdamage == false) State = States.idle;
 
             if (!isAttacking && joystick.Horizontal != 0)
-                Run();
+            {
+                if (isGrounded && gettingdamage == false) State = States.run;
+            }
             else if (!isAttacking && Input.GetButton("Horizontal"))
-                Run();
+            {
+                if (isGrounded && gettingdamage == false) State = States.run;
+            }
             if (!isAttacking && isGrounded && jumpTimer && joystick.Vertical > 0.5f)
             {
                 Jump();
@@ -148,7 +156,6 @@ public class Hero : Entity
 
     private void Run()
     {
-        if (isGrounded && gettingdamage == false) State = States.run;
         Vector3 dir;
         if (joystick.Horizontal != 0)
             dir = transform.right * joystick.Horizontal;
