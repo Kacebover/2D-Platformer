@@ -77,14 +77,25 @@ public class Hero : Entity
 
     private void FixedUpdate()
     {
-        if (!isDead && lives > 0)
+        if (Pause.pause == false && lives > 0 && isDead == false)
         {
-            Checkground();
-        }
-        if (!isAttacking && joystick.Horizontal != 0)
+            if (isGrounded && isGroundedfs == false)
+            {
+                landingSound.Play();
+                isGroundedfs = true;
+            }
+            else if (!isGrounded && isDead == false && gettingdamage == false) 
+            {
+                if (isGroundedfs == true)
+                    isGroundedfs = false;
+                if (State != States.jump)
+                    State = States.jump;
+            }
+            if (!isAttacking && joystick.Horizontal != 0)
                 Run();
-        else if (!isAttacking && Input.GetButton("Horizontal"))
-            Run();
+            else if (!isAttacking && Input.GetButton("Horizontal"))
+                Run();
+        }
     }
 
     private void Update()
@@ -176,18 +187,6 @@ public class Hero : Entity
         Vector2 temp = new Vector2 (Instance.col.bounds.center.x, Instance.transform.position.y);
         Collider2D[] collider = Physics2D.OverlapBoxAll(temp, tempy, 0);
         isGrounded = collider.Length > 1;
-        if (isGrounded && isGroundedfs == false)
-        {
-            landingSound.Play();
-            isGroundedfs = true;
-        }
-        else if (!isGrounded && isDead == false && gettingdamage == false) 
-        {
-            if (isGroundedfs == true)
-                isGroundedfs = false;
-            if (State != States.jump)
-                State = States.jump;
-        }
     }
 
     public override void GetDamage()
@@ -252,7 +251,7 @@ public class Hero : Entity
 
     private IEnumerator AttackAnimation()
     {
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.46f);
         isAttacking = false;
     }
 
@@ -290,6 +289,28 @@ public class Hero : Entity
         jumpTimer = false;
         yield return new WaitForSeconds(0.5f);
         jumpTimer = true;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        foreach(var i in collision.contacts)
+        {
+            if (i.normal.y > 0.5)
+            {
+                isGrounded = true;
+                break;
+            }
+        }
+    }
+
+    private void OnCollisionExit2D()
+    {
+        Checkground();
+    }
+
+    private void OnTriggerStay2D()
+    {
+        isGrounded = false;
     }
 }
 

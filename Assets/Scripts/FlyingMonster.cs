@@ -13,6 +13,10 @@ public class FlyingMonster : Entity
     [SerializeField] private GameObject hero;
     [SerializeField] private Transform herotarget;
     [SerializeField] private Transform spawntarget;
+    [SerializeField] private float firstx;
+    [SerializeField] private float secondx;
+    [SerializeField] private float firsty;
+    [SerializeField] private float secondy;
     private bool canDamage;
 
     private States State
@@ -35,7 +39,7 @@ public class FlyingMonster : Entity
     }
     void Update()
     {
-        if (Hero.Instance.col.bounds.center.x <= 120 && Hero.Instance.col.bounds.center.x >= 98 && hero.transform.position.y <= 2.2)
+        if (Hero.Instance.col.bounds.center.x <= secondx && Hero.Instance.col.bounds.center.x >= firstx && hero.transform.position.y <= firsty && hero.transform.position.y >= secondy)
             GetComponent<AIDestinationSetter>().target = herotarget;
         else
             GetComponent<AIDestinationSetter>().target = spawntarget;
