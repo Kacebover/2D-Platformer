@@ -17,12 +17,14 @@ public class Hero : Entity
     [SerializeField] private AudioSource damageSound;
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource landingSound;
-    private Vector2 tempy = new Vector2 (0.7f, 0);
+    private Vector2 tempy = new Vector2 (0.72f, 0);
     private bool gettingdamage;
     private bool isGrounded;
     private bool isGroundedfs;
     public static bool isDead;
     private bool jumpTimer;
+    private bool onGround;
+    private float normal;
 
     [SerializeField] private Image[] hearts;
 
@@ -79,6 +81,8 @@ public class Hero : Entity
     {
         if (Pause.pause == false && lives > 0 && isDead == false)
         {
+            if (!onGround)
+                Checkground();
             if (isGrounded && isGroundedfs == false)
             {
                 landingSound.Play();
@@ -295,9 +299,13 @@ public class Hero : Entity
     {
         foreach(var i in collision.contacts)
         {
+            normal = i.normal.y;
             if (i.normal.y > 0.5)
             {
-                isGrounded = true;
+                if (!onGround)
+                    onGround = true;
+                if (!isGrounded)
+                    isGrounded = true;
                 break;
             }
         }
@@ -305,12 +313,13 @@ public class Hero : Entity
 
     private void OnCollisionExit2D()
     {
-        Checkground();
+        onGround = false;
     }
 
     private void OnTriggerStay2D()
     {
-        isGrounded = false;
+        if (isGrounded)
+            isGrounded = false;
     }
 }
 
