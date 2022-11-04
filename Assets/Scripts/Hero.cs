@@ -316,9 +316,9 @@ public class Hero : Entity
         onGround = false;
     }
 
-    private void OnTriggerStay2D()
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (isGrounded)
+        if (isGrounded && collision.gameObject != Knife.Instance.gameObject)
             isGrounded = false;
     }
 }
