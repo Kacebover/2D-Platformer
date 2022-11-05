@@ -11,6 +11,11 @@ public class Worm : Entity
     private bool isGrounded = false;
     private bool canDamage;
 
+    private States State
+    {
+        get { return (States)anim.GetInteger("state"); }
+        set { anim.SetInteger("state", (int)value); }
+    }
     private void Awake()
     {
 
@@ -62,7 +67,7 @@ public class Worm : Entity
     {
         rb.isKinematic = true;
         col.isTrigger = true; 
-        anim.SetTrigger("death");
+        State = States.deathworm;
         StartCoroutine(Clarity());
     }
     private void OnTriggerStay2D()
@@ -109,6 +114,12 @@ public class Worm : Entity
         canDamage = false;
         yield return new WaitForSeconds(0.2f);
         canDamage = true;
+    }
+    public override IEnumerator GetHit()
+    {
+        State = States.wormhit;
+        yield return new WaitForSeconds(0.25f);
+        State = States.worm;
     }
 }
 

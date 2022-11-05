@@ -325,13 +325,26 @@ public class Hero : Entity
 
 public enum States
 {
-    idle,
-    run,
-    jump,
-    attack,
-    death,
-    flyingmonsterattack,
-    flyingmonsterfly,
-    flyingmonsterdeath,
-    gettingdamage
+    idle, //0
+    run, //1
+    jump, //2
+    attack, //3
+    death, //4
+    flyingmonsterattack, //5
+    flyingmonsterfly, //6
+    flyingmonsterdeath, //7
+    gettingdamage, //8
+    skeletonattack, //9
+    skeletonwalk, //10
+    skeletonrun, //11
+    skeletonhit, //12
+    skeletondeath, //13
+    skeletonidle, //14
+    wormhit, //15
+    monsterhit, //16
+    flyingmonsterhit, //17
+    monster, //18
+    worm, //19
+    deathworm, //20
+    deathmonster //21
 }

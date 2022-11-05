@@ -12,6 +12,11 @@ public class Monster : Entity
     private Collider2D col;
     private bool canDamage;
 
+    private States State
+    {
+        get { return (States)anim.GetInteger("state"); }
+        set { anim.SetInteger("state", (int)value); }
+    }
     private void Awake()
     {
 
@@ -87,7 +92,7 @@ public class Monster : Entity
     public override void Die()
     {
         col.isTrigger = true; 
-        anim.SetTrigger("death");
+        State = States.deathmonster;
         StartCoroutine(Clarity());
     }
 
@@ -116,5 +121,12 @@ public class Monster : Entity
         canDamage = false;
         yield return new WaitForSeconds(0.2f);
         canDamage = true;
+    }
+
+    public override IEnumerator GetHit()
+    {
+        State = States.monsterhit;
+        yield return new WaitForSeconds(0.25f);
+        State = States.monster;
     }
 }

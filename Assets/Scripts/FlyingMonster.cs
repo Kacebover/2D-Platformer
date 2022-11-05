@@ -18,6 +18,8 @@ public class FlyingMonster : Entity
     [SerializeField] private float firsty;
     [SerializeField] private float secondy;
     private bool canDamage;
+    private bool gettingdamage;
+
 
     private States State
     {
@@ -29,6 +31,7 @@ public class FlyingMonster : Entity
         sprite = GetComponentInChildren<SpriteRenderer>();
         lives = 2;
         AIPath = GetComponent<AIPath>();
+        gettingdamage = false;
     }
 
     private void Start()
@@ -49,7 +52,7 @@ public class FlyingMonster : Entity
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && lives > 0 && canDamage == true)
+        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && lives > 0 && canDamage == true && !gettingdamage)
         {
             State = States.flyingmonsterattack;
             StartCoroutine(Attacking());
@@ -120,5 +123,13 @@ public class FlyingMonster : Entity
         canDamage = false;
         yield return new WaitForSeconds(0.2f);
         canDamage = true;
+    }
+    public override IEnumerator GetHit()
+    {
+        State = States.flyingmonsterhit;
+        gettingdamage = true;
+        yield return new WaitForSeconds(0.4f);
+        gettingdamage = false;
+        State = States.flyingmonsterfly;
     }
 }

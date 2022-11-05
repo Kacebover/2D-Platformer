@@ -15,11 +15,18 @@ public class Entity : MonoBehaviour
             lives--;
             if (lives == 0)
                 Die();  
+            else
+                StartCoroutine(GetHit());
         }
     }
 
     public virtual void Die()
     {
         Destroy(this.gameObject);
+    }
+
+    public virtual IEnumerator GetHit()
+    {
+        yield return new WaitForSeconds(0);
     }
 }
