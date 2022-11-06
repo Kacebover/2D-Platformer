@@ -24,7 +24,6 @@ public class Hero : Entity
     public static bool isDead;
     private bool jumpTimer;
     private bool onGround;
-    private float normal;
 
     [SerializeField] private Image[] hearts;
 
@@ -299,7 +298,6 @@ public class Hero : Entity
     {
         foreach(var i in collision.contacts)
         {
-            normal = i.normal.y;
             if (i.normal.y > 0.5)
             {
                 if (!onGround)
@@ -334,7 +332,7 @@ public enum States
     flyingmonsterfly, //6
     flyingmonsterdeath, //7
     gettingdamage, //8
-    skeletonattack, //9
+    skeletonattacka, //9
     skeletonwalk, //10
     skeletonrun, //11
     skeletonhit, //12
@@ -346,5 +344,6 @@ public enum States
     monster, //18
     worm, //19
     deathworm, //20
-    deathmonster //21
+    deathmonster, //21
+    skeletonattackb //22
 }

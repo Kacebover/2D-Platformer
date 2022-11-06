@@ -9250,6 +9250,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &765734572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 765734573}
+  m_Layer: 10
+  m_Name: attackPos (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &765734573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765734572}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.737, z: 1.2819511}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1567598472}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &773910991
 GameObject:
   m_ObjectHideFlags: 0
@@ -21770,7 +21801,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f3b6b62005e004a03afe1b4d2e6bc27a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ebc6a0ab2fbb82c39b18415a062a1699, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -22069,6 +22100,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1699165519}
+  - {fileID: 765734573}
   m_Father: {fileID: 0}
   m_RootOrder: 51
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -22108,7 +22140,7 @@ MonoBehaviour:
   mondamageSound: {fileID: 1567598466}
   speed: 2
   AIPath: {fileID: 1567598470}
-  skeletonattacksound: {fileID: 0}
+  skeletonattacksound: {fileID: 1567598465}
   hero: {fileID: 7208420589963268080}
   herotarget: {fileID: 7208420589963268084}
   spawntarget: {fileID: 0}
@@ -22116,6 +22148,11 @@ MonoBehaviour:
   secondx: 60.5
   firsty: -1
   secondy: -17.5
+  attackPos: {fileID: 765734573}
+  attackRange: 2.5
+  heromask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &1586678984
 GameObject:
   m_ObjectHideFlags: 0
@@ -35464,7 +35501,7 @@ GameObject:
   - component: {fileID: 7208420589963268094}
   - component: {fileID: 7208420589963268093}
   - component: {fileID: 7208420589963268092}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37801,7 +37838,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7208420590183471561}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40.51001, y: -0.41000175, z: -0.03753568}
+  m_LocalPosition: {x: 61.51001, y: -17.410002, z: -0.03753568}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39441,7 +39478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7208420590394346099}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: attackPos
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
@@ -40035,7 +40072,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7208420590472175816}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.026999, y: 3.862, z: 0.050069306}
+  m_LocalPosition: {x: 37.277, y: 3.862, z: 0.050069306}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41489,7 +41526,7 @@ GameObject:
   - component: {fileID: 7208420591033116028}
   - component: {fileID: 7208420591033115971}
   - component: {fileID: 7208420591033115970}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: New Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41530,7 +41567,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7208420591042031677}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 39.51001, y: -0.41000175, z: -0.03753568}
+  m_LocalPosition: {x: 60.51001, y: -17.410002, z: -0.03753568}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

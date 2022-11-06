@@ -20,8 +20,12 @@ public class Skeleton : Entity
     [SerializeField] private float firsty;
     [SerializeField] private float secondy;
     private Rigidbody2D rb;
-    private bool canDamage;
     private bool gettingdamage;
+    [SerializeField] private Transform attackPos;
+    [SerializeField] private float attackRange;
+    [SerializeField] private LayerMask heromask;
+    private bool isRecharged;
+    private bool isAttacking;
 
     private States State
     {
@@ -35,48 +39,59 @@ public class Skeleton : Entity
         AIPath = GetComponent<AIPath>();
         rb = GetComponent<Rigidbody2D>();
         gettingdamage = false;
+        isAttacking = false;
+        isRecharged = true;
     }
 
     private void Start()
     {
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
-        canDamage = true;
         dir = transform.right;
     }
     void Update()
     {
-        if (Hero.Instance.col.bounds.center.x <= secondx && Hero.Instance.col.bounds.center.x >= firstx && hero.transform.position.y <= firsty && hero.transform.position.y >= secondy)
+        if (!isAttacking)
         {
-            GetComponent<AIDestinationSetter>().target = herotarget;
-            if (lives > 0)
+            if (Hero.Instance.col.bounds.center.x <= secondx && Hero.Instance.col.bounds.center.x >= firstx && hero.transform.position.y <= firsty && hero.transform.position.y >= secondy)
             {
-                if (Hero.Instance.col.bounds.center.x + Hero.Instance.col.bounds.size.x / 2 >= col.bounds.center.x - col.bounds.size.x / 2 - 0.1f && Hero.Instance.col.bounds.center.x - Hero.Instance.col.bounds.size.x / 2 <= col.bounds.center.x + col.bounds.size.x / 2 + 0.1f)
+                GetComponent<AIDestinationSetter>().target = herotarget;
+                if (lives > 0)
                 {
-                    AIPath.enabled = false;
-                    if (!gettingdamage)
-                        State = States.skeletonidle;
+                    if (Hero.Instance.col.bounds.center.x + Hero.Instance.col.bounds.size.x / 2 >= col.bounds.center.x - col.bounds.size.x / 2 - 0.1f && Hero.Instance.col.bounds.center.x - Hero.Instance.col.bounds.size.x / 2 <= col.bounds.center.x + col.bounds.size.x / 2 + 0.1f)
+                    {
+                        AIPath.enabled = false;
+                        if (!gettingdamage)
+                            State = States.skeletonidle;
+                    }
+                    else
+                    {
+                        AIPath.enabled = true;
+                        if (!gettingdamage)
+                            State = States.skeletonrun;
+                    }
+                    if (isRecharged && !gettingdamage && Hero.isDead == false)
+                    {
+                        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, heromask);
+                        for (int i = 0; i < colliders.Length; i++)
+                        {
+                            Attack();
+                        }
+                    }
+                    if (AIPath.enabled)
+                        sprite.flipX = AIPath.desiredVelocity.x <= 0.01f;
+                    else
+                        sprite.flipX = Hero.Instance.col.bounds.center.x < col.bounds.center.x;
                 }
-                else
-                {
-                    AIPath.enabled = true;
-                    if (!gettingdamage)
-                        State = States.skeletonrun;
-                }
-                if (AIPath.enabled)
-                    sprite.flipX = AIPath.desiredVelocity.x <= 0.01f;
-                else
-                    sprite.flipX = Hero.Instance.col.bounds.center.x < col.bounds.center.x;
+            }
+            else
+            {
+                AIPath.enabled = false;
+                GetComponent<AIDestinationSetter>().target = spawntarget;
+                if (lives > 0)
+                    Move();
             }
         }
-        else
-        {
-            AIPath.enabled = false;
-            GetComponent<AIDestinationSetter>().target = spawntarget;
-            if (lives > 0)
-                Move();
-        }
-
     }
 
     private void Move()
@@ -91,15 +106,6 @@ public class Skeleton : Entity
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
     }
-    
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && lives > 0 && canDamage == true)
-        {
-            State = States.flyingmonsterattack;
-            StartCoroutine(Attacking());
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -110,14 +116,6 @@ public class Skeleton : Entity
                 GetDamage();
                 StartCoroutine(EmemyOnAttack());
             }
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false)
-        {
-            StartCoroutine(HeroOnCol());
         }
     }
 
@@ -142,16 +140,14 @@ public class Skeleton : Entity
         Destroy(this.gameObject);
     }
 
-    private IEnumerator Attacking()
-    {
-        yield return new WaitForSeconds(0.82f);
-        State = States.flyingmonsterfly;
-    }
-
     private void OnAttack()
     {
         skeletonattacksound.Play();
-        Hero.Instance.GetDamage();
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, heromask);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Hero.Instance.GetDamage();
+        }
     }
     private IEnumerator EmemyOnAttack()
     {
@@ -160,17 +156,31 @@ public class Skeleton : Entity
         yield return new WaitForSeconds(0.2f);
         enemyColor.color = new Color(1, 1, 1, enemyColor.color.a);
     }
-    private IEnumerator HeroOnCol()
-    {
-        canDamage = false;
-        yield return new WaitForSeconds(0.2f);
-        canDamage = true;
-    }
     public override IEnumerator GetHit()
     {
         State = States.skeletonhit;
         gettingdamage = true;
         yield return new WaitForSeconds(0.2f);
         gettingdamage = false;
+    }
+    private void Attack()
+    {
+        AIPath.enabled = false;
+        State = States.skeletonattacka;
+        isAttacking = true;
+        isRecharged = false;
+        StartCoroutine(AttackAnimation());
+        StartCoroutine(AttackCoolDown());
+    }
+    private IEnumerator AttackAnimation()
+    {
+        yield return new WaitForSeconds(0.59f);
+        isAttacking = false;
+    }
+
+    private IEnumerator AttackCoolDown()
+    {
+        yield return new WaitForSeconds(1);
+        isRecharged = true;
     }
 }
