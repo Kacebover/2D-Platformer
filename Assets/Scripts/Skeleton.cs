@@ -26,6 +26,7 @@ public class Skeleton : Entity
     [SerializeField] private LayerMask heromask;
     private bool isRecharged;
     private bool isAttacking;
+    private bool isAttackA;
 
     private States State
     {
@@ -41,6 +42,7 @@ public class Skeleton : Entity
         gettingdamage = false;
         isAttacking = false;
         isRecharged = true;
+        isAttackA = true;
     }
 
     private void Start()
@@ -62,7 +64,12 @@ public class Skeleton : Entity
                     {
                         AIPath.enabled = false;
                         if (!gettingdamage)
-                            State = States.skeletonidle;
+                        {
+                            if (isRecharged && Hero.isDead == false && !isAttackA)
+                                AttackB();
+                            else
+                                State = States.skeletonidle;
+                        }
                     }
                     else
                     {
@@ -70,13 +77,11 @@ public class Skeleton : Entity
                         if (!gettingdamage)
                             State = States.skeletonrun;
                     }
-                    if (isRecharged && !gettingdamage && Hero.isDead == false)
+                    if (isRecharged && !gettingdamage && Hero.isDead == false && isAttackA)
                     {
                         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, heromask);
-                        for (int i = 0; i < colliders.Length; i++)
-                        {
+                        if (colliders.Length == 1)
                             Attack();
-                        }
                     }
                     if (AIPath.enabled)
                         sprite.flipX = AIPath.desiredVelocity.x <= 0.01f;
@@ -143,11 +148,18 @@ public class Skeleton : Entity
     private void OnAttack()
     {
         skeletonattacksound.Play();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, heromask);
-        for (int i = 0; i < colliders.Length; i++)
+        if (Hero.isDead == false)
         {
-            Hero.Instance.GetDamage();
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, heromask);
+            if(colliders.Length == 1)
+                Hero.Instance.GetDamage();
+
         }
+    }
+    private void OnAttackB()
+    {
+        if (Hero.Instance.col.bounds.center.x + Hero.Instance.col.bounds.size.x / 2 < col.bounds.center.x - col.bounds.size.x / 2 - 0.1f || Hero.Instance.col.bounds.center.x - Hero.Instance.col.bounds.size.x / 2 > col.bounds.center.x + col.bounds.size.x / 2 + 0.1f)
+            isAttackA = true;
     }
     private IEnumerator EmemyOnAttack()
     {
@@ -169,6 +181,7 @@ public class Skeleton : Entity
         State = States.skeletonattacka;
         isAttacking = true;
         isRecharged = false;
+        isAttackA = false;
         StartCoroutine(AttackAnimation());
         StartCoroutine(AttackCoolDown());
     }
@@ -183,4 +196,26 @@ public class Skeleton : Entity
         yield return new WaitForSeconds(1);
         isRecharged = true;
     }
+    private void AttackB()
+    {
+        AIPath.enabled = false;
+        State = States.skeletonattackb;
+        isAttacking = true;
+        isRecharged = false;
+        StartCoroutine(AttackAnimationB());
+        StartCoroutine(AttackCoolDownB());
+    }
+    private IEnumerator AttackAnimationB()
+    {
+        yield return new WaitForSeconds(1.17f);
+        OnAttackB();
+        isAttacking = false;
+    }
+
+    private IEnumerator AttackCoolDownB()
+    {
+        yield return new WaitForSeconds(1.5f);
+        isRecharged = true;
+    }
+
 }
