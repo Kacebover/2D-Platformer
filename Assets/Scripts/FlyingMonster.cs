@@ -103,7 +103,8 @@ public class FlyingMonster : Entity
     private IEnumerator Attacking()
     {
         yield return new WaitForSeconds(0.82f);
-        State = States.flyingmonsterfly;
+        if (lives > 0)
+            State = States.flyingmonsterfly;
     }
 
     private void OnAttack()
@@ -130,6 +131,7 @@ public class FlyingMonster : Entity
         gettingdamage = true;
         yield return new WaitForSeconds(0.4f);
         gettingdamage = false;
-        State = States.flyingmonsterfly;
+        if (lives > 0)
+            State = States.flyingmonsterfly;
     }
 }

@@ -127,6 +127,7 @@ public class Monster : Entity
     {
         State = States.monsterhit;
         yield return new WaitForSeconds(0.25f);
-        State = States.monster;
+        if (lives > 0)
+            State = States.monster;
     }
 }

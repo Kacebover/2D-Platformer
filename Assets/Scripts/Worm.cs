@@ -119,7 +119,8 @@ public class Worm : Entity
     {
         State = States.wormhit;
         yield return new WaitForSeconds(0.25f);
-        State = States.worm;
+        if (lives > 0)
+            State = States.worm;
     }
 }
 
