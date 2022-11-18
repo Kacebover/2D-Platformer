@@ -28,5 +28,6 @@ public class LevelSelector : MonoBehaviour
     {
         SceneManager.LoadScene(numberInBuild);
         Destroy(GameObject.Find("Audio Source"));
+        menu.Stop();
     }
 }
