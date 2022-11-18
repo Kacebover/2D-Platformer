@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class LevelSelector : MonoBehaviour
 {
     [SerializeField] private Button[] levels;
-
+    [SerializeField] private AudioSource menu;
+    public static LevelSelector Instance { get; set; }
     private void Start()
     {
         int levelReached = PlayerPrefs.GetInt("levelReached", 1);
@@ -15,6 +16,8 @@ public class LevelSelector : MonoBehaviour
         for (int i = 0; i < levels.Length; i++)
             if (i + 1 > levelReached)
                 levels[i].interactable = false;
+        if (MainMenu.isMusic)
+            menu.Play();
     }
 
     public void ToMenu()
