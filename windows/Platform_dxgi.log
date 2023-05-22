@@ -1,6 +1,6 @@
 warn:  CreateDXGIFactory2: Ignoring flags
 info:  Game: Platform.exe
-info:  DXVK: v1.9.2
+info:  DXVK: v1.10.3
 info:  Built-in extension providers:
 info:    Win32 WSI
 info:    OpenVR
@@ -20,7 +20,7 @@ info:      Size: 3840 MiB
 info:      Flags: 0x1
 info:      Memory Type[0]: Property Flags = 0x1
 info:    Memory Heap[1]: 
-info:      Size: 23978 MiB
+info:      Size: 23980 MiB
 info:      Flags: 0x0
 info:      Memory Type[1]: Property Flags = 0x6
 info:      Memory Type[3]: Property Flags = 0xe
@@ -29,7 +29,7 @@ info:      Size: 256 MiB
 info:      Flags: 0x1
 info:      Memory Type[2]: Property Flags = 0x7
 info:  Game: Platform.exe
-info:  DXVK: v1.9.2
+info:  DXVK: v1.10.3
 info:  Built-in extension providers:
 info:    Win32 WSI
 info:    OpenVR
@@ -49,7 +49,7 @@ info:      Size: 3840 MiB
 info:      Flags: 0x1
 info:      Memory Type[0]: Property Flags = 0x1
 info:    Memory Heap[1]: 
-info:      Size: 23978 MiB
+info:      Size: 23980 MiB
 info:      Flags: 0x0
 info:      Memory Type[1]: Property Flags = 0x6
 info:      Memory Type[3]: Property Flags = 0xe
@@ -58,7 +58,7 @@ info:      Size: 256 MiB
 info:      Flags: 0x1
 info:      Memory Type[2]: Property Flags = 0x7
 info:  Game: Platform.exe
-info:  DXVK: v1.9.2
+info:  DXVK: v1.10.3
 info:  Built-in extension providers:
 info:    Win32 WSI
 info:    OpenVR
@@ -78,7 +78,7 @@ info:      Size: 3840 MiB
 info:      Flags: 0x1
 info:      Memory Type[0]: Property Flags = 0x1
 info:    Memory Heap[1]: 
-info:      Size: 23978 MiB
+info:      Size: 23980 MiB
 info:      Flags: 0x0
 info:      Memory Type[1]: Property Flags = 0x6
 info:      Memory Type[3]: Property Flags = 0xe
@@ -87,7 +87,7 @@ info:      Size: 256 MiB
 info:      Flags: 0x1
 info:      Memory Type[2]: Property Flags = 0x7
 info:  Game: Platform.exe
-info:  DXVK: v1.9.2
+info:  DXVK: v1.10.3
 info:  Built-in extension providers:
 info:    Win32 WSI
 info:    OpenVR
@@ -107,7 +107,7 @@ info:      Size: 3840 MiB
 info:      Flags: 0x1
 info:      Memory Type[0]: Property Flags = 0x1
 info:    Memory Heap[1]: 
-info:      Size: 23978 MiB
+info:      Size: 23980 MiB
 info:      Flags: 0x0
 info:      Memory Type[1]: Property Flags = 0x6
 info:      Memory Type[3]: Property Flags = 0xe

@@ -10,6 +10,7 @@ public class Hero : Entity
     [SerializeField] private GameObject[] numbers = new GameObject[11];
     private int number = 0;
     public int deadzone;
+    public bool isLinar = false;
     [SerializeField] private int speed = 3;
     [SerializeField] private int health;
     [SerializeField] private int jumpForce = 10;
@@ -91,8 +92,13 @@ public class Hero : Entity
             {
                 if (isGroundedfs == true)
                     isGroundedfs = false;
-                if (State != States.jump)
-                    State = States.jump;
+                if (State != States.jump && State != States.Linarjump)
+                {
+                    if (!isLinar)
+                        State = States.jump;
+                    else
+                        State = States.Linarjump;
+                }
             }
             if (!isAttacking && joystick.Horizontal != 0)
                 Run();
@@ -110,25 +116,48 @@ public class Hero : Entity
         if (lives <= 0 && gettingdamage == false)
         {
             isDead = true;
-            State = States.death;
+            if (!isLinar)
+                State = States.death;
+            else
+                State = States.Linardeath;
         }
         else if (transform.position.y < deadzone)
         {
             damageSound.Play();
             isDead = true;
-            State = States.death;
+            if (!isLinar)
+                State = States.death;
+            else
+                State = States.Linardeath;
         }
         else if (Pause.pause == false && lives > 0)
         {
-            if (isGrounded && !isAttacking && gettingdamage == false) State = States.idle;
-
+            if (isGrounded && !isAttacking && gettingdamage == false)
+            {
+                if (!isLinar)
+                    State = States.idle;
+                else
+                    State = States.Linar;
+            }
             if (!isAttacking && joystick.Horizontal != 0)
             {
-                if (isGrounded && gettingdamage == false) State = States.run;
+                if (isGrounded && gettingdamage == false)
+                {
+                    if (!isLinar)
+                        State = States.run;
+                    else
+                        State = States.Linarjump;
+                }
             }
             else if (!isAttacking && Input.GetButton("Horizontal"))
             {
-                if (isGrounded && gettingdamage == false) State = States.run;
+                if (isGrounded && gettingdamage == false) 
+                {
+                    if (!isLinar)
+                        State = States.run;
+                    else
+                        State = States.Linarjump;
+                }
             }
             if (!isAttacking && isGrounded && jumpTimer && joystick.Vertical > 0.5f)
             {
@@ -164,8 +193,13 @@ public class Hero : Entity
                 hearts[i].sprite = deadHeart;
         }
         }
-        else if (Finish.Levelpassed && State != States.idle)
-            State = States.idle;
+        else if (Finish.Levelpassed && (State != States.idle || State != States.Linar))
+        {
+            if (!isLinar)
+                State = States.idle;
+            else
+                State = States.Linar;
+        }
     }
 
     private void Run()
@@ -176,7 +210,10 @@ public class Hero : Entity
         else
             dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
-        sprite.flipX = dir.x > 0.0f;
+        if (isLinar)
+            sprite.flipX = dir.x <= 0.0f;
+        else 
+            sprite.flipX = dir.x > 0.0f;
     }
 
     private void Jump()
@@ -195,7 +232,8 @@ public class Hero : Entity
     public override void GetDamage()
     {
         damageSound.Play();
-        State = States.gettingdamage;
+        if (!isLinar)
+            State = States.gettingdamage;
         StartCoroutine(HeroOnAttack());
         lives -= 1;
     }
@@ -204,7 +242,10 @@ public class Hero : Entity
     {
         if (isGrounded && isRecharged && gettingdamage == false)
         {
-            State = States.attack;
+            if (!isLinar)
+                State = States.attack;
+            else
+                State = States.Linaratt;
             isAttacking = true;
             isRecharged = false;
 
@@ -345,5 +386,13 @@ public enum States
     worm, //19
     deathworm, //20
     deathmonster, //21
-    skeletonattackb //22
+    skeletonattackb, //22
+    box, //23
+    Linar, //24
+    Linaratt, //25
+    Linarjump, //26
+    Linardeath, //27
+    Stilletidle, //28
+    Stilletatta, //29
+    Stilletattb //30
 }

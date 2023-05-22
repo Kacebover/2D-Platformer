@@ -24,14 +24,23 @@ public class Knife : MonoBehaviour
                 if (Hero.isKnifed[i] == true)
                 {
                     Hero.isKnifed[i] = false;
+                    int h = 1;
+                    if (Hero.Instance.isLinar)
+                        h = -1;
                     if (Hero.sprite.flipX == false)
-                        dir[i] = Hero.Instance.layout[i].transform.right * -1;
+                        dir[i] = Hero.Instance.layout[i].transform.right * -h;
                     else
-                        dir[i] = Hero.Instance.layout[i].transform.right * 1;
+                        dir[i] = Hero.Instance.layout[i].transform.right * h;
+                    float u = 1;
+                    if (Hero.Instance.isLinar)
+                        u = 0.25f;
+                    float j = 0;
+                    if (Hero.Instance.isLinar)
+                        j = 0.4f;
                     if (dir[i].x > 0.0f)
-                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.Instance.col.bounds.center.x, Hero.sprite.transform.position.y + 1, Hero.sprite.transform.position.z);
+                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.Instance.col.bounds.center.x - j, Hero.sprite.transform.position.y + u, Hero.sprite.transform.position.z);
                     else
-                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.Instance.col.bounds.center.x - 0.6f, Hero.sprite.transform.position.y + 1, Hero.sprite.transform.position.z);
+                        Hero.Instance.layout[i].transform.position = new Vector3(Hero.Instance.col.bounds.center.x - 0.6f - j, Hero.sprite.transform.position.y + u, Hero.sprite.transform.position.z);
                     sprite[i].flipX = dir[i].x < 0.0f;
                 }
                 Hero.Instance.layout[i].transform.position = Vector3.MoveTowards(Hero.Instance.layout[i].transform.position, Hero.Instance.layout[i].transform.position + dir[i], speed * Time.deltaTime);

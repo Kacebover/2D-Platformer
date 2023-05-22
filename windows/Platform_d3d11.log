@@ -26,6 +26,7 @@ info:    VK_KHR_image_format_list
 info:    VK_KHR_sampler_mirror_clamp_to_edge
 info:    VK_KHR_shader_float_controls
 info:    VK_KHR_swapchain
+info:    VK_KHR_timeline_semaphore
 info:  Device features:
 info:    robustBufferAccess                     : 1
 info:    fullDrawIndexUint32                    : 1
@@ -72,6 +73,8 @@ info:  VK_EXT_host_query_reset
 info:    hostQueryReset                         : 1
 info:  VK_EXT_memory_priority
 info:    memoryPriority                         : 1
+info:  VK_EXT_non_seamless_cube_map
+info:    nonSeamlessCubeMap                     : 0
 info:  VK_EXT_robustness2
 info:    robustBufferAccess2                    : 1
 info:    robustImageAccess2                     : 1
@@ -84,12 +87,14 @@ info:    geometryStreams                        : 1
 info:  VK_EXT_vertex_attribute_divisor
 info:    vertexAttributeInstanceRateDivisor     : 1
 info:    vertexAttributeInstanceRateZeroDivisor : 1
+info:  VK_KHR_buffer_device_address
+info:    bufferDeviceAddress                    : 0
+info:  VK_KHR_timeline_semaphore
+info:    timelineSemaphore                      : 1
 info:  Queue families:
 info:    Graphics : 0
 info:    Transfer : 1
-warn:  DXVK: No state cache file found
-warn:  DXVK: Creating new state cache file
-info:  DXVK: Using 10 compiler threads
+info:  DXVK: Read 9 valid state cache entries
 info:  DXGI: VK_FORMAT_D24_UNORM_S8_UINT -> VK_FORMAT_D32_SFLOAT_S8_UINT
 info:  D3D11CoreCreateDevice: Probing D3D_FEATURE_LEVEL_11_0
 info:  D3D11CoreCreateDevice: Using feature level D3D_FEATURE_LEVEL_11_0
@@ -119,6 +124,7 @@ info:    VK_KHR_image_format_list
 info:    VK_KHR_sampler_mirror_clamp_to_edge
 info:    VK_KHR_shader_float_controls
 info:    VK_KHR_swapchain
+info:    VK_KHR_timeline_semaphore
 info:  Device features:
 info:    robustBufferAccess                     : 1
 info:    fullDrawIndexUint32                    : 1
@@ -165,6 +171,8 @@ info:  VK_EXT_host_query_reset
 info:    hostQueryReset                         : 1
 info:  VK_EXT_memory_priority
 info:    memoryPriority                         : 1
+info:  VK_EXT_non_seamless_cube_map
+info:    nonSeamlessCubeMap                     : 0
 info:  VK_EXT_robustness2
 info:    robustBufferAccess2                    : 1
 info:    robustImageAccess2                     : 1
@@ -177,23 +185,28 @@ info:    geometryStreams                        : 1
 info:  VK_EXT_vertex_attribute_divisor
 info:    vertexAttributeInstanceRateDivisor     : 1
 info:    vertexAttributeInstanceRateZeroDivisor : 1
+info:  VK_KHR_buffer_device_address
+info:    bufferDeviceAddress                    : 0
+info:  VK_KHR_timeline_semaphore
+info:    timelineSemaphore                      : 1
 info:  Queue families:
 info:    Graphics : 0
 info:    Transfer : 1
-info:  DXVK: Read 0 valid state cache entries
-info:  DXVK: Using 10 compiler threads
+info:  DXVK: Read 9 valid state cache entries
 info:  DXGI: VK_FORMAT_D24_UNORM_S8_UINT -> VK_FORMAT_D32_SFLOAT_S8_UINT
-err:   D3D11DXGIResource::GetSharedHandle: Stub
+err:   Failed to create shared resource: VK_KHR_EXTERNAL_MEMORY_WIN32 not supported
+warn:  D3D11: Failed to write shared resource info for a texture
 info:  Presenter: Actual swap chain properties:
 info:    Format:       VK_FORMAT_B8G8R8A8_UNORM
 info:    Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
-info:    Buffer size:  1920x1080
+info:    Buffer size:  2560x1440
 info:    Image count:  3
 info:    Exclusive FS: 1
 warn:  DxgiSwapChain::GetFrameStatistics: Semi-stub
+info:  DXVK: Using 10 compiler threads
 info:  Presenter: Actual swap chain properties:
 info:    Format:       VK_FORMAT_B8G8R8A8_UNORM
 info:    Present mode: VK_PRESENT_MODE_FIFO_KHR
-info:    Buffer size:  1920x1080
+info:    Buffer size:  2560x1440
 info:    Image count:  4
 info:    Exclusive FS: 1

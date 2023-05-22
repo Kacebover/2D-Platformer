@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Worm : Entity
 {
+    [SerializeField] private bool damage = true;
     private Animator anim;
     private Collider2D col;
     private SpriteRenderer sprite;
@@ -37,11 +38,17 @@ public class Worm : Entity
         else
             rb.Sleep();
     }
+    private void Update()
+    {
+        if (!damage)
+            State = States.box;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == Hero.Instance.gameObject && Hero.isDead == false && canDamage == true)
         {
-            Hero.Instance.GetDamage();
+            if (damage == true)
+             Hero.Instance.GetDamage();
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

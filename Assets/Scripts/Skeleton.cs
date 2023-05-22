@@ -24,9 +24,13 @@ public class Skeleton : Entity
     [SerializeField] private Transform attackPos;
     [SerializeField] private float attackRange;
     [SerializeField] private LayerMask heromask;
-    private bool isRecharged;
-    private bool isAttacking;
-    private bool isAttackA;
+    [SerializeField] private bool isRecharged;
+    [SerializeField] private bool isAttacking;
+    [SerializeField] private bool isAttackA;
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private int jumpForce = 10;
+    private Vector2 tempy = new Vector2 (0.72f, 0);
+    public static Skeleton Instance { get; set; }
 
     private States State
     {
@@ -50,6 +54,12 @@ public class Skeleton : Entity
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
         dir = transform.right;
+        if (Hero.Instance.isLinar)
+            State = States.Stilletidle;
+    }
+    private void FixedUpdate()
+    {
+        Checkground();
     }
     void Update()
     {
@@ -67,15 +77,26 @@ public class Skeleton : Entity
                         {
                             if (isRecharged && Hero.isDead == false && !isAttackA)
                                 AttackB();
-                            else
+                            else if (!Hero.Instance.isLinar)
                                 State = States.skeletonidle;
+                            else 
+                                State = States.Stilletidle;
                         }
                     }
                     else
                     {
                         AIPath.enabled = true;
+                        Move(4);
                         if (!gettingdamage)
-                            State = States.skeletonrun;
+                        {
+                            if (!Hero.Instance.isLinar)
+                                State = States.skeletonrun;
+                            else if (isGrounded)
+                            {
+                                State = States.Stilletidle;
+                                rb.velocity = Vector2.up * jumpForce;
+                            }
+                        }
                     }
                     if (isRecharged && !gettingdamage && Hero.isDead == false && isAttackA)
                     {
@@ -84,7 +105,13 @@ public class Skeleton : Entity
                             Attack();
                     }
                     if (AIPath.enabled)
-                        sprite.flipX = AIPath.desiredVelocity.x <= 0.01f;
+                    {
+                        if (sprite.flipX != Hero.Instance.col.bounds.center.x < col.bounds.center.x)
+                        {
+                            sprite.flipX = Hero.Instance.col.bounds.center.x < col.bounds.center.x;
+                            dir *= -1;
+                        }
+                    }
                     else
                         sprite.flipX = Hero.Instance.col.bounds.center.x < col.bounds.center.x;
                 }
@@ -94,21 +121,38 @@ public class Skeleton : Entity
                 AIPath.enabled = false;
                 GetComponent<AIDestinationSetter>().target = spawntarget;
                 if (lives > 0)
-                    Move();
+                    Move(2);
             }
         }
     }
-
-    private void Move()
+    private void Checkground()
+    {
+        Vector2 temp = new Vector2 (col.bounds.center.x, transform.position.y);
+        Collider2D[] collider = Physics2D.OverlapBoxAll(temp, tempy, 0);
+        isGrounded = collider.Length > 1;
+    }
+    private void Move(int speed1)
     {
         if (!gettingdamage)
-            State = States.skeletonwalk;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * 0.1f + transform.right * dir.x * 0.7f, -0.1f);
-        if (colliders.Length > 0 || col.bounds.center.x <= firstx || col.bounds.center.x >= secondx) 
+        {
+            if (!Hero.Instance.isLinar)
+                State = States.skeletonwalk;
+            else if (isGrounded)
+            {
+                State = States.Stilletidle;
+                rb.velocity = Vector2.up * jumpForce;
+            }
+        }
+        Collider2D[] colliders;
+        if (!Hero.Instance.isLinar)
+            colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * 0.1f + transform.right * dir.x * 0.7f, -0.1f);
+        else
+            colliders = Physics2D.OverlapCircleAll(transform.position + transform.up * -0.1f + transform.right * dir.x * 0.7f, -0.1f);
+        if (col.bounds.center.x <= firstx || col.bounds.center.x >= secondx) 
         {
             dir *= -1;
         }
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed1 * Time.deltaTime);
         sprite.flipX = dir.x < 0.0f;
     }
 
@@ -128,7 +172,8 @@ public class Skeleton : Entity
     {
         col.isTrigger = true; 
         AIPath.enabled = false;
-        State = States.skeletondeath;
+        if (!Hero.Instance.isLinar)
+            State = States.skeletondeath;
         StartCoroutine(Clarity());
     }
 
@@ -170,7 +215,8 @@ public class Skeleton : Entity
     }
     public override IEnumerator GetHit()
     {
-        State = States.skeletonhit;
+        if (!Hero.Instance.isLinar)
+            State = States.skeletonhit;
         gettingdamage = true;
         yield return new WaitForSeconds(0.2f);
         gettingdamage = false;
@@ -178,7 +224,10 @@ public class Skeleton : Entity
     private void Attack()
     {
         AIPath.enabled = false;
-        State = States.skeletonattacka;
+        if (!Hero.Instance.isLinar)
+            State = States.skeletonattacka;
+        else
+            State = States.Stilletatta;
         isAttacking = true;
         isRecharged = false;
         isAttackA = false;
@@ -199,7 +248,10 @@ public class Skeleton : Entity
     private void AttackB()
     {
         AIPath.enabled = false;
-        State = States.skeletonattackb;
+        if (!Hero.Instance.isLinar)
+            State = States.skeletonattackb;
+        else
+            State = States.Stilletattb;
         isAttacking = true;
         isRecharged = false;
         StartCoroutine(AttackAnimationB());
