@@ -22269,6 +22269,11 @@ MonoBehaviour:
   heromask:
     serializedVersion: 2
     m_Bits: 1024
+  isRecharged: 0
+  isAttacking: 0
+  isAttackA: 0
+  isGrounded: 0
+  jumpForce: 10
 --- !u!1 &1586678984
 GameObject:
   m_ObjectHideFlags: 0
@@ -30450,6 +30455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420589176760737}
+  damage: 1
 --- !u!82 &7208420589176760737
 AudioSource:
   m_ObjectHideFlags: 0
@@ -30830,6 +30836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420589183262205}
+  damage: 1
 --- !u!82 &7208420589183262205
 AudioSource:
   m_ObjectHideFlags: 0
@@ -33663,7 +33670,7 @@ MonoBehaviour:
   radius: 0.9
   height: 2
   canMove: 1
-  maxSpeed: 3.6
+  maxSpeed: 4
   gravity: {x: 0, y: 0, z: 0}
   groundMask:
     serializedVersion: 2
@@ -33817,10 +33824,11 @@ MonoBehaviour:
   hero: {fileID: 7208420589963268080}
   herotarget: {fileID: 7208420589963268084}
   spawntarget: {fileID: 7208420589389531902}
-  firstx: -2
-  secondx: 13
-  firsty: -7
+  firstx: -3.5
+  secondx: 14.5
+  firsty: -6.5
   secondy: -12
+  isRecharged: 0
 --- !u!58 &7208420589658073618
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -35312,6 +35320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420589887533532}
+  damage: 1
 --- !u!4 &7208420589887533479
 Transform:
   m_ObjectHideFlags: 0
@@ -35913,6 +35922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420589959058446}
+  damage: 1
 --- !u!82 &7208420589959058446
 AudioSource:
   m_ObjectHideFlags: 0
@@ -36405,6 +36415,7 @@ MonoBehaviour:
   - {fileID: 7208420590459254837}
   - {fileID: 7208420589691255311}
   deadzone: -30
+  isLinar: 0
   speed: 3
   health: 0
   jumpForce: 10
@@ -40229,6 +40240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420590396535999}
+  damage: 1
 --- !u!82 &7208420590396535999
 AudioSource:
   m_ObjectHideFlags: 0
@@ -43158,6 +43170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420591135348616}
+  damage: 1
 --- !u!4 &7208420591135348627
 Transform:
   m_ObjectHideFlags: 0
@@ -43535,6 +43548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420591179083598}
+  damage: 1
 --- !u!82 &7208420591179083598
 AudioSource:
   m_ObjectHideFlags: 0
@@ -44278,6 +44292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mondamageSound: {fileID: 7208420591289852981}
+  damage: 1
 --- !u!4 &7208420591289852983
 Transform:
   m_ObjectHideFlags: 0

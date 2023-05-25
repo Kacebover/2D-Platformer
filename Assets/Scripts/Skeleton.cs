@@ -174,6 +174,8 @@ public class Skeleton : Entity
         AIPath.enabled = false;
         if (!Hero.Instance.isLinar)
             State = States.skeletondeath;
+        else 
+            State = States.Stilletidle;
         StartCoroutine(Clarity());
     }
 
